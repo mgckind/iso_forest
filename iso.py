@@ -4,6 +4,38 @@ import numpy as np
 import random as rn
 import os
 
+
+def c_factor(n) :
+    return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)
+
+class iForest(object):
+    def __init__(self,X, ntrees,  sample_size):
+        self.ntrees = ntrees
+        self.X = X
+        self.nobjs = len(X)
+        self.sample = sample_size
+        self.Trees = []
+        self.limit = int(np.ceil(np.log2(self.sample)))
+        self.c = c_factor(self.sample)        
+        for i in range(self.ntrees):
+            ix = rn.sample(range(self.nobjs), self.sample)
+            X_p = X[ix]
+            self.Trees.append(iTree(X_p, 0, self.limit))
+
+    def compute_paths(self, X_in = None):
+        if X_in is None:
+            X_in = self.X
+        S = np.zeros(len(X_in))
+        for i in  range(len(X_in)):
+            h_temp = 0
+            for j in range(self.ntrees):
+                h_temp += PathFactor(X_in[i],self.Trees[j]).path*1.0
+            Eh = h_temp/self.ntrees
+            S[i] = 2.0**(-Eh/self.c)
+        return S
+        
+        
+
 class Node(object):
     def __init__(self, X, q, p, e, left, right, node_type = '' ):
         self.e = e
@@ -16,8 +48,7 @@ class Node(object):
         self.ntype = node_type
 
 
-def c_factor(n) :
-    return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)
+
 
 class iTree(object):
 
@@ -27,7 +58,7 @@ class iTree(object):
 
     def __init__(self,X,e,l):
         self.e = e # depth
-        self.X = X
+        self.X = X #save data for now
         self.size = len(X) #  n objects
         self.Q = np.arange(np.shape(X)[1], dtype='int') # n dimensions
         self.l = l # depth limit
