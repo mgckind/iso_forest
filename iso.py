@@ -16,6 +16,9 @@ class Node(object):
         self.ntype = node_type
 
 
+def c_factor(n) :
+    return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)
+
 class iTree(object):
 
     """
@@ -47,7 +50,36 @@ class iTree(object):
             left=self.make_tree(X[w],e+1,l),\
             right=self.make_tree(X[~w],e+1,l),\
             node_type = 'inNode' )
+
+    def get_node(self, path):
+        node = self.root
+        for p in path:
+            if p == 'L' : node = node.left
+            if p == 'R' : node = node.right
+        return node
         
             
+class PathFactor(object):
+    def __init__(self,x,itree):
+        self.path_list=[]        
+        self.x = x
+        self.e = 0
+        self.path = self.find_path(itree.root)
 
+    def find_path(self,T):
+        if T.ntype == 'exNode':
+            if T.size == 1: return self.e
+            else:
+                self.e = self.e + c_factor(T.size)
+                return self.e
+        else:
+            a = T.q
+            self.e += 1
+            if self.x[a] < T.p:
+                self.path_list.append('L')
+                return self.find_path(T.left)
+            else:
+                self.path_list.append('R')
+                return self.find_path(T.right)
 
+        
