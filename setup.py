@@ -17,7 +17,7 @@ setup(
     author='Matias Carrasco Kind',
     author_email='mcarras2@illinois.edu',
     scripts=[],
-    py_modules=['iso'],
+    py_modules=['iso','version'],
     packages=[],
     license='License.txt',
     description='Isolation Forest for anomalous detection',
