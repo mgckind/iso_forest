@@ -3,7 +3,7 @@ __author__ = 'Matias Carrasco Kind'
 import numpy as np
 import random as rn
 import os
-
+from version import __version__
 
 def c_factor(n) :
     return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)

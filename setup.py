@@ -10,8 +10,7 @@ extra_link_args = []
 libraries = []
 library_dirs = []
 include_dirs = []
-__version__ = '1.0.0'
-#exec(open('easyaccess/version.py').read())
+exec(open('version.py').read())
 setup(
     name='isoforest',
     version=__version__,
