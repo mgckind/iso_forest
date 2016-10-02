@@ -12,12 +12,12 @@ library_dirs = []
 include_dirs = []
 exec(open('version.py').read())
 setup(
-    name='isoforest',
+    name='iso_forest',
     version=__version__,
     author='Matias Carrasco Kind',
     author_email='mcarras2@illinois.edu',
     scripts=[],
-    py_modules=['iso','version'],
+    py_modules=['iso_forest','version'],
     packages=[],
     license='License.txt',
     description='Isolation Forest for anomalous detection',
