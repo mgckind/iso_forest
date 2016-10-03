@@ -93,6 +93,10 @@ class iTree(object):
             if p == 'L' : node = node.left
             if p == 'R' : node = node.right
         return node
+
+
+
+
         
             
 class PathFactor(object):
@@ -132,8 +136,8 @@ def all_branches(node, current=[], branches = None):
     return branches
 
 
-def branch2num(branch):
-    num = [0]
+def branch2num(branch, init_root=0):
+    num = [init_root]
     for b in branch:
         if b == 'L':
             num.append(num[-1] * 2 + 1)
@@ -141,18 +145,20 @@ def branch2num(branch):
             num.append(num[-1] * 2 + 2)
     return num
 
-def gen_graph(branches):
-    num_branches = [branch2num(i) for i in branches]
+def gen_graph(branches, g = None, init_root = 0, pre = ''):
+    num_branches = [branch2num(i, init_root) for i in branches]
     all_nodes = [j for branch in num_branches for j in branch]
-    all_nodes = np.unique(all_nodes).tolist()
-    g=ig.Graph()
-    for k in all_nodes : g.add_vertex(str(k))
+    all_nodes = np.unique(all_nodes)
+    all_nodes = all_nodes.tolist()
+    if g is None:
+        g=ig.Graph()
+    for k in all_nodes : g.add_vertex(pre+str(k))
     t=[]
     for j in range(len(branches)):
-        branch = branch2num(branches[j])
+        branch = branch2num(branches[j], init_root)
         for i in range(len(branch)-1):
             pair = [branch[i],branch[i+1]]
             if pair not in t:
                 t.append(pair)
-                g.add_edge(str(branch[i]),str(branch[i+1]))
-    return g
+                g.add_edge(pre+str(branch[i]),pre+str(branch[i+1]))
+    return g,max(all_nodes)
