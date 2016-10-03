@@ -4,18 +4,21 @@ import numpy as np
 import random as rn
 import os
 from version import __version__
+import igraph as ig
 
 def c_factor(n) :
     return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)
 
 class iForest(object):
-    def __init__(self,X, ntrees,  sample_size):
+    def __init__(self,X, ntrees,  sample_size, limit=None):
         self.ntrees = ntrees
         self.X = X
         self.nobjs = len(X)
         self.sample = sample_size
         self.Trees = []
-        self.limit = int(np.ceil(np.log2(self.sample)))
+        self.limit = limit
+        if limit is None:
+            self.limit = int(np.ceil(np.log2(self.sample)))
         self.c = c_factor(self.sample)        
         for i in range(self.ntrees):
             ix = rn.sample(range(self.nobjs), self.sample)
@@ -64,6 +67,7 @@ class iTree(object):
         self.l = l # depth limit
         self.p = None
         self.q = None
+        self.exnodes = 0
         self.root = self.make_tree(X,e,l)
         
 
@@ -72,6 +76,7 @@ class iTree(object):
         if e >= l or len(X) <= 1:
             left = None
             right = None
+            self.exnodes += 1
             return Node(X, self.q, self.p, e, left, right, node_type = 'exNode' )
         else:
             self.q = rn.choice(self.Q)
@@ -113,4 +118,41 @@ class PathFactor(object):
                 self.path_list.append('R')
                 return self.find_path(T.right)
 
-        
+def all_branches(node, current=[], branches = None):
+    current = current[:node.e]
+    if branches is None: branches = []
+    if node.ntype == 'inNode':
+        current.append('L')
+        all_branches(node.left, current=current, branches=branches)
+        current = current[:-1]
+        current.append('R')
+        all_branches(node.right, current=current, branches=branches)
+    else:
+        branches.append(current)
+    return branches
+
+
+def branch2num(branch):
+    num = [0]
+    for b in branch:
+        if b == 'L':
+            num.append(num[-1] * 2 + 1)
+        if b == 'R':
+            num.append(num[-1] * 2 + 2)
+    return num
+
+def gen_graph(branches):
+    num_branches = [branch2num(i) for i in branches]
+    all_nodes = [j for branch in num_branches for j in branch]
+    all_nodes = np.unique(all_nodes).tolist()
+    g=ig.Graph()
+    for k in all_nodes : g.add_vertex(str(k))
+    t=[]
+    for j in range(len(branches)):
+        branch = branch2num(branches[j])
+        for i in range(len(branch)-1):
+            pair = [branch[i],branch[i+1]]
+            if pair not in t:
+                t.append(pair)
+                g.add_edge(str(branch[i]),str(branch[i+1]))
+    return g
