@@ -36,6 +36,14 @@ class iForest(object):
             Eh = h_temp/self.ntrees
             S[i] = 2.0**(-Eh/self.c)
         return S
+
+    def compute_paths_single(self, x):
+        S = np.zeros(self.ntrees)
+        for j in range(self.ntrees):
+            path =  PathFactor(x,self.Trees[j]).path*1.0
+            S[j] = 2.0**(-1.0*path/self.c)
+        return S
+
         
         
 
