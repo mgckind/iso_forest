@@ -3,11 +3,16 @@ __author__ = 'Matias Carrasco Kind'
 import numpy as np
 import random as rn
 import os
+import warnings
 from version import __version__
-import igraph as ig
+try:
+    import igraph as ig
+except:
+    warnings.warn("No igraph interface for plotting trees")
+    
 
 def c_factor(n) :
-    return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/n)
+    return 2.0*(np.log(n-1)+0.5772156649) - (2.0*(n-1.)/(n*1.0))
 
 class iForest(object):
     def __init__(self,X, ntrees,  sample_size, limit=None):
