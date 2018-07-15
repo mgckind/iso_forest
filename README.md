@@ -2,7 +2,7 @@
 
 This is a simple package implementation for the isolation forest method described (among other places) in this [paper](icdm08b.pdf) for detecting anomalies and outliers from a data point distribution.
 
-# Extended isolation forest
+## Extended isolation forest
 
 For an extended version of this algorithm that produces more precise scoring maps please visit this repository
 
