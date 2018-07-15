@@ -1,6 +1,9 @@
 import sys
 import os
-from distutils.core import setup
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from distutils.core import setup
 prjdir = os.path.dirname(__file__)
 
 def read(filename):
