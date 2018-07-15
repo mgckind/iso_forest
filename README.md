@@ -11,12 +11,16 @@ For an extended version of this algorithm that produces more precise scoring map
 
 ## Installation
 
-  pip install iso_forest
+
+    pip install iso_forest
+
 
 or directly from the Github repository
 
-  pip install git+https://github.com/mgckind/iso_forest.git
+
+    pip install git+https://github.com/mgckind/iso_forest.git
  
+
 It supports python2 and python3 
 
 ## Requirements
