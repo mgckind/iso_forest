@@ -25,7 +25,11 @@ It supports python2 and python3
 
 ## Requirements
 
-No extra requirements are needed, It also contains means to draw the trees created using the [igraph](http://igraph.org/) library.
+- numpy
+
+No extra requirements are needed for the algorithm.
+
+In addition, it also contains means to draw the trees created using the [igraph](http://igraph.org/) library.
 
 ## Use Examples
 
@@ -36,7 +40,7 @@ See these 2 notebooks examples on how to use it
 
 ## Releases 
 
-### v1.0.2
+### v1.0.3
 
 - Initial Release
 

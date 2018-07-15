@@ -26,5 +26,5 @@ setup(
     description='Isolation Forest for anomaly detection',
     long_description=read('README.md'),
     url='https://github.com/mgckind/iso_forest',
-    install_requires=[],
+    install_requires=["numpy"],
 )
