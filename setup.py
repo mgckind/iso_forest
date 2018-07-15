@@ -20,7 +20,7 @@ setup(
     py_modules=['iso_forest','version'],
     packages=[],
     license='License.txt',
-    description='Isolation Forest for anomalous detection',
+    description='Isolation Forest for anomaly detection',
     long_description=read('README.md'),
     url='https://github.com/mgckind/iso_forest',
     install_requires=[],
