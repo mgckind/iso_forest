@@ -128,7 +128,7 @@ class PathFactor(object):
 
     def find_path(self,T):
         if T.ntype == 'exNode':
-            if T.size == 1: return self.e
+            if T.size <= 1: return self.e
             else:
                 self.e = self.e + c_factor(T.size)
                 return self.e
